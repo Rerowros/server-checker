@@ -24,15 +24,16 @@ if command -v git &>/dev/null; then
     }
 else
     echo "📥 Downloading files..."
-    # Fall back to direct download
+    # Fall back to direct download (using raw.githubusercontent.com for reliability)
     mkdir -p lib
+    local raw_url="https://raw.githubusercontent.com/Rerowros/server-checker/main"
     
-    curl -sSL "${REPO_URL}/raw/main/check-server.sh" -o check-server.sh
-    curl -sSL "${REPO_URL}/raw/main/lib/colors.sh" -o lib/colors.sh
-    curl -sSL "${REPO_URL}/raw/main/lib/network.sh" -o lib/network.sh
-    curl -sSL "${REPO_URL}/raw/main/lib/blocklist.sh" -o lib/blocklist.sh
-    curl -sSL "${REPO_URL}/raw/main/lib/dpi.sh" -o lib/dpi.sh
-    curl -sSL "${REPO_URL}/raw/main/lib/report.sh" -o lib/report.sh
+    curl -sSL "${raw_url}/check-server.sh" -o check-server.sh
+    curl -sSL "${raw_url}/lib/colors.sh" -o lib/colors.sh
+    curl -sSL "${raw_url}/lib/network.sh" -o lib/network.sh
+    curl -sSL "${raw_url}/lib/blocklist.sh" -o lib/blocklist.sh
+    curl -sSL "${raw_url}/lib/dpi.sh" -o lib/dpi.sh
+    curl -sSL "${raw_url}/lib/report.sh" -o lib/report.sh
 fi
 
 # Make executable
@@ -48,10 +49,12 @@ echo "🚀 Run the checker:"
 echo "   cd $INSTALL_DIR && ./check-server.sh"
 echo ""
 
-# Ask to run now
-read -p "Run now? [Y/n] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
-    echo ""
-    ./check-server.sh
+# Ask to run now (pipe-safe read using /dev/tty)
+if [ -t 0 ] || [ -c /dev/tty ]; then
+    read -p "Run now? [Y/n] " -n 1 -r < /dev/tty || true
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+        echo ""
+        ./check-server.sh
+    fi
 fi
