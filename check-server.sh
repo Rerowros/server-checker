@@ -358,13 +358,15 @@ run_network_tests() {
     
     # Speed test
     if [[ "$NO_SPEEDTEST" == "false" ]]; then
-        print_info "Running speed test..."
-        local speed
-        speed=$(run_speedtest)
+        print_info "Running speed test (100MB download)..."
+        local speed_result
+        speed_result=$(run_speedtest)
         
-        if [[ "${speed:-0}" != "0" ]]; then
-            print_pass "Download speed: ${speed} MB/s"
-            add_test_result "Speed" "Download" "pass" "${speed} MB/s"
+        IFS='|' read -r mbs mbps <<< "$speed_result"
+        
+        if [[ "${mbs:-0}" != "0" ]]; then
+            print_pass "Download speed: ${mbps} Mbps (${mbs} MB/s)"
+            add_test_result "Speed" "Download" "pass" "${mbps} Mbps"
         else
             print_warn "Speed test: Could not measure"
             add_test_result "Speed" "Download" "warn" "Could not measure"

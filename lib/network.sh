@@ -181,24 +181,26 @@ run_traceroute() {
     return 1
 }
 
-# Speedtest (simplified)
+# Speedtest (improved)
 run_speedtest() {
-    local test_file="${1:-https://speed.cloudflare.com/__down?bytes=10000000}"
+    # 100MB test file from Cloudflare
+    local test_file="${1:-https://speed.cloudflare.com/__down?bytes=100000000}"
     local timeout="${2:-30}"
     
     if command -v curl &>/dev/null; then
-        local start_time=$(date +%s.%N)
-        local bytes=$(curl -s -o /dev/null -w "%{size_download}" --max-time "$timeout" "$test_file" 2>/dev/null)
-        local end_time=$(date +%s.%N)
+        # Use curl's built-in speed_download (bytes/sec)
+        local speed_bps
+        speed_bps=$(curl -s -o /dev/null -w "%{speed_download}" --max-time "$timeout" "$test_file" 2>/dev/null | cut -d. -f1)
         
-        if [[ "$bytes" -gt 0 ]]; then
-            local duration=$(echo "$end_time - $start_time" | bc 2>/dev/null || echo "1")
-            local speed=$(echo "scale=2; $bytes / $duration / 1024 / 1024" | bc 2>/dev/null || echo "0")
-            echo "${speed:-0}"
+        if [[ -n "$speed_bps" && "$speed_bps" -gt 0 ]]; then
+            # Convert to MB/s and Mbps
+            local mbs=$(echo "scale=2; $speed_bps / 1024 / 1024" | bc 2>/dev/null || echo "0")
+            local mbps=$(echo "scale=2; $speed_bps * 8 / 1024 / 1024" | bc 2>/dev/null || echo "0")
+            echo "$mbs|$mbps"
             return 0
         fi
     fi
     
-    echo "0"
+    echo "0|0"
     return 1
 }
