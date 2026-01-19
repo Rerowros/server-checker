@@ -26,7 +26,7 @@ else
     echo "📥 Downloading files..."
     # Fall back to direct download (using raw.githubusercontent.com for reliability)
     mkdir -p lib
-    local raw_url="https://raw.githubusercontent.com/Rerowros/server-checker/main"
+    raw_url="https://raw.githubusercontent.com/Rerowros/server-checker/main"
     
     curl -sSL "${raw_url}/check-server.sh" -o check-server.sh
     curl -sSL "${raw_url}/lib/colors.sh" -o lib/colors.sh
