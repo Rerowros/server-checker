@@ -16,13 +16,13 @@
 ### Один-командный запуск
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/YOUR_REPO/server-checker/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Rerowros/server-checker/main/install.sh | bash
 ```
 
 ### Локальная установка
 
 ```bash
-git clone https://github.com/YOUR_REPO/server-checker.git
+git clone https://github.com/Rerowros/server-checker.git
 cd server-checker
 chmod +x check-server.sh
 ./check-server.sh
