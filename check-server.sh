@@ -7,7 +7,7 @@
 # |____/ \___|_|    \_/ \___|_|       |_| |_| |_|\___|\___|_|\_\___|_|
 #
 # VPS Server Checker - Comprehensive testing script
-# https://github.com/your-repo/server-checker
+# https://github.com/Rerowros/server-checker
 # =============================================================================
 
 # Note: Not using set -e due to issues with bash associative arrays and error handling

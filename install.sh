@@ -7,7 +7,7 @@
 set -e
 
 INSTALL_DIR="${HOME}/server-checker"
-REPO_URL="https://github.com/YOUR_REPO/server-checker"
+REPO_URL="https://github.com/Rerowros/server-checker"
 
 echo "🖥️  VPS Server Checker - Quick Install"
 echo "========================================"
